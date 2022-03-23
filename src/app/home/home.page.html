@@ -10,6 +10,21 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div>
+    <ion-chip >
+      <ion-label>{{todoList.length}} 
+        {{todoList.length === 0 || todoList.length === 1  ? 'task' : 'tasks'}}</ion-label>
+    </ion-chip>
+  </div>
+  
+  <ion-card *ngIf="todoList.length === 0">
+    <ion-card-header>
+      <ion-card-title>Empty Lists</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>Hooray! Your tasks are all cleared up, you don't have any todo.
+      click the big plus button to add new tasks.
+    </ion-card-content>
+  </ion-card>
 
   <ion-card *ngFor="let item of todoList; let i = index" class="ion-margin">
     <ion-card-header>
@@ -40,8 +55,8 @@
       </ion-item>
 
       <ion-item button (click)="delete(item.key)">
-        <ion-icon name="trash-outline"></ion-icon>
-        <p>Cancel</p>
+        <ion-icon name="trash-outline" color="danger"></ion-icon>
+        <p class="delete">Delete</p>
       </ion-item>
     </ion-row>
 

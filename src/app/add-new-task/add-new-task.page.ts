@@ -1,6 +1,6 @@
 import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { TodoService } from '../todo.service';
 
 @Component({
@@ -19,7 +19,9 @@ export class AddNewTaskPage implements OnInit {
   itemCategory
 
 
-  constructor(public modalCtlr: ModalController, public todoService:TodoService) {
+  constructor(public modalCtlr: ModalController, 
+    public todoService:TodoService,
+    public alertController: AlertController) {
 
    }
 
@@ -36,11 +38,11 @@ export class AddNewTaskPage implements OnInit {
     if(uid){
       await this.todoService.addTask(uid,this.newTaskObj)
     }else{
-      console.log("can't save empty task");
+      this.presentAlert();
     }
 
 
-    this.dismis()
+    this.dismis();
   }
   
   selectCategory(index){
@@ -50,6 +52,18 @@ export class AddNewTaskPage implements OnInit {
 
   async dismis(){
     await this.modalCtlr.dismiss(this.newTaskObj)
+  }
+
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      message: 'Can\'t save an empty task.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
   }
 
 }
